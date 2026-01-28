@@ -438,7 +438,7 @@
     background-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 0) 0%,
             rgba(17, 17, 17, 0.6) 100%),
-        url('/images/pic3.jpg');
+        url('images/pic3.jpg');
     background-size: cover;
     position: relative;
     color: #fff;
@@ -448,7 +448,7 @@
     background-image: linear-gradient(to bottom,
             rgba(0, 0, 0, 0) 0%,
             rgba(17, 17, 17, 0.6) 100%),
-        url('/images/pic4.jpg');
+        url('images/pic4.jpg');
 }
 
 .services h2 {
@@ -735,4 +735,5 @@
     /* 這行你已經有了，很重要，避免自定義指標擋住點擊事件 */
     display: block;
     /* 確保它們是顯示的 */
+
 }
