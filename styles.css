@@ -7,7 +7,8 @@
 
 .navbar {
     background: #131313;
-    height: 80px;
+    height: 150px;
+    /* 從 80px 改成 100px，你可以根據感覺調成 120px */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,7 +21,8 @@
 .navbar__container {
     display: flex;
     justify-content: space-between;
-    height: 80px;
+    height: 150px;
+    /* 這裡也要跟著改成 100px，確保內容垂直置中 */
     z-index: 1;
     width: 100%;
     max-width: 1300px;
@@ -28,19 +30,60 @@
     padding: 0 50px;
 }
 
+/* #navbar__logo 是父容器，它同時包住了圖片和文字 */
 #navbar__logo {
-    background-color: #ff8177;
-    background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
-    background-size: 100%;
-    -webkit-background-clip: text;
-    -moz-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    -moz-text-fill-color: transparent;
+    /* --- 關鍵修改：新增這兩行 --- */
     display: flex;
+    /* 1. 啟用彈性排版 */
     align-items: center;
-    cursor: pointer;
+    /* 2. 讓容器內的圖片和文字垂直置中對齊 */
+    /* -------------------------- */
+
     text-decoration: none;
-    font-size: 2rem;
+    /* 建議加入：移除連結預設的底線 */
+
+    /* --- 原本的文字特效設定保持不變 --- */
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+
+    /* 漸層色彩設定 */
+    background: linear-gradient(to right, #ff0844 0%, #ffb199 25%, #4837ff 50%, #ffb199 75%, #ff0844 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    /* 動態動畫 */
+    animation: shine 3s linear infinite;
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* 設定 Logo 圖片的尺寸與間距 */
+#navbar__logo--img {
+    /* --- 原本的設定保持不變 --- */
+    height: 100px;
+    width: auto;
+    margin-right: 45px;
+    object-fit: contain;
+
+    /* --- 新增：科技感登場動畫設定 (方案 A) --- */
+    /* 一開始先隱藏並縮小 */
+    opacity: 0;
+    transform: scale(0.8);
+    /* 應用動畫：名稱 時間 緩動函數 延遲 僅執行一次並停在最後狀態 */
+    animation: holoBuild 1.2s cubic-bezier(0.215, 0.610, 0.355, 1.000) 0.3s forwards;
+}
+/* 針對手機版做響應式調整 */
+@media screen and (max-width: 960px) {
+    #navbar__logo--img {
+        height: 35px;
+        /* 手機版可以稍微縮小一點 */
+    }
 }
 
 .fa-gem {
@@ -715,6 +758,50 @@
     }
 }
 
+/* --- 方案 A 的動畫關鍵影格 --- */
+@keyframes holoBuild {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        /* 一開始模糊且暗 */
+        filter: blur(10px) brightness(0);
+    }
+
+    40% {
+        /* 中途突然變亮，模擬能量衝擊 */
+        opacity: 0.6;
+        filter: blur(2px) brightness(3) drop-shadow(0 0 20px rgba(72, 55, 255, 0.8));
+    }
+
+    70% {
+        opacity: 0.9;
+        transform: scale(1.05);
+        /* 稍微放大一點產生彈性 */
+        filter: blur(1px) brightness(1.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        /* 最後回到正常清晰狀態 */
+        filter: blur(0) brightness(1) drop-shadow(0 0 0 transparent);
+    }
+}
+
+/* 煙火粒子基礎樣式 */
+.particle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    /* 確保粒子不會擋住點擊 */
+    border-radius: 50%;
+    /* 圓形粒子 */
+    z-index: 10001;
+    /* 確保在自定義游標之上 */
+}
+
 /* 針對按鈕的 Hover 動畫 */
 .main__btn,
 .button,
@@ -735,5 +822,4 @@
     /* 這行你已經有了，很重要，避免自定義指標擋住點擊事件 */
     display: block;
     /* 確保它們是顯示的 */
-
 }
