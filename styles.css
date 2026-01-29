@@ -16,6 +16,31 @@
     position: sticky;
     top: 0;
     z-index: 999;
+    /* 2. 為了增加科技感，建議加入一點透明度與模糊，這樣它滑下來時會有透視感 */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    background: rgba(20, 20, 20, 0.95);
+    /* 95% 不透明的深色 */
+    
+    /* 3. 確保有一條極細的邊框，區隔導航欄與內容，避免看起來像「一坨黑」 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.01);
+    
+    /* 4. 原有的 transition 保持不變 */
+     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    height: 130px;
+    /* 依照你之前調大的高度 */
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
+/* 當導航欄被隱藏時，向上推移 100% 的高度 */
+.navbar.nav-hidden {
+    transform: translateY(-100%);
+    box-shadow: none;
+    background: #141414;
+        /* 強制保持背景色 */
+    /* 隱藏時關閉陰影，避免露餡 */
 }
 
 .navbar__container {
@@ -249,52 +274,155 @@
 
 
 
-/* --- 找到 Hero Section CSS 區塊 --- */
-
-/* 1. 確保 .main 具備定位基準與溢出隱藏 */
+/* --- 修改後的 Hero Section (含進場動畫) --- */
 .main {
     background-color: #141414;
     position: relative;
-    /* 必須加這行，作為背景的定位基準 */
+    height: 90vh;
+    width: 100%;
+    /* 1. 關鍵：防止背景放大時產生捲軸 */
     overflow: hidden;
-    /* 必須加這行，防止背景旋轉時超出畫面 */
+    display: flex;
+    align-items: center;
 }
 
-/* 2. 插入這段動態背景程式碼 */
 .main::before {
     content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    /* 這裡透過徑向漸層營造出緩動的光暈感 */
-    background: radial-gradient(circle at center, rgba(247, 112, 98, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 20% 30%, rgba(72, 55, 255, 0.1) 0%, transparent 30%);
-    animation: mesh-gradient 20s linear infinite;
-    z-index: 0;
-    /* 確保它在文字內容後方 */
-    pointer-events: none;
-    /* 確保背景不會干擾點擊事件 */
-}
-
-/* 3. 確保原本的內容在背景之上 */
-.main__container {
-    /* 你原本的程式碼已經有 z-index: 1，這很好！ */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-self: center;
-    margin: 0 auto;
-    height: 90vh;
-    z-index: 1;
-    position: relative;
-    /* 確保層級生效 */
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    max-width: 1300px;
-    padding: 0 50px;
+    height: 100%;
+    z-index: 0;
+
+    /* 關鍵 1：改用 cover，確保任何比例下都填滿，不留白 */
+    background-size: cover;
+
+    /* 關鍵 2：使用百分比精確定位。
+       第一個數值 (25%)：這會把照片稍微往右推，露出你和 TED 字樣，並把 X 擠出去。
+       第二個數值 (0%)：絕對鎖定頂部，確保頭部不見的問題不再發生。 */
+    background-position: 25% 0%;
+    background-repeat: no-repeat;
+
+    /* 漸層優化：使用 40% 比例，但在大螢幕上增加平滑感 */
+    background-image:
+        linear-gradient(to right,
+            #141414 0%,
+            #141414 40%,
+            rgba(20, 20, 20, 0.85) 60%,
+            rgba(20, 20, 20, 0.6) 100%),
+        url('images/TEST.png');
+
+    opacity: 0;
+    transform: scale(1.05);
+    /* 稍微縮小初始比例，減少縮放負擔 */
+    animation: bgReveal 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+}
+/* 1. 大容器：作為定位基準點 */
+.main__container {
+    width: 100%;
+    max-width: none;
+    display: flex;
+    align-items: center;
+    height: 90vh;
+    position: relative;
+    /* ✨ 重要：讓連結可以對著它定位 */
+    padding: 0;
+    z-index: 1;
 }
 
+/* 2. 左側 40% 文字區 */
+.main__content {
+    width: 40%;
+    flex: 0 0 40%;
+    z-index: 5;
+    /* 低於連結的 z-index 沒關係，因為連結被釘在右邊了 */
+    position: relative;
+    padding-left: 8vw;
+    /* 確保文字可以點選，不被任何東西擋住 */
+    pointer-events: auto;
+}
+
+/* 3. 右側 60% 照片顯示區 */
+.main__img--container {
+    width: 60%;
+    flex: 0 0 60%;
+    height: 100%;
+    /* 這裡只負責顯示照片，不放連結 */
+}
+
+/* 4. ✨ 終極方案：獨立出來的「右側 60% 傳送門」 */
+.main__img--link {
+    position: absolute;
+    /* ✨ 關鍵：直接脫離排版限制 */
+    top: 0;
+    right: 0;
+    /* ✨ 關鍵：釘死在最右邊 */
+    width: 60%;
+    /* ✨ 關鍵：寬度強行設定為右邊 60% */
+    height: 100%;
+    display: block;
+    z-index: 99;
+    /* 確保它在最上層 */
+    cursor: pointer;
+
+    /* 🌈 實驗模式：取消下一行的註解，如果你看到右邊有淡淡的綠色，就代表成功了！ */
+    /* background: rgba(0, 255, 0, 0.2); */
+}
+
+/* 5. Hover 效果：當滑鼠移到「連結」上，讓「照片區」變亮 */
+/* 利用 CSS 的「相鄰兄弟選擇器」或「父層偵測」 */
+.main__container:has(.main__img--link:hover) .main__img--container {
+    filter: brightness(1.15);
+    transition: 0.3s;
+}
+
+/* 4. 為了防止單字真的太長，可以加上這個保險 */
+.main__content h1,
+.main__content h2 {
+    
+    width: 100%;
+    overflow: visible;
+    /* 確保文字不會被隱藏 */
+    white-space: nowrap;
+    /* 如果你希望單字不換行且完整顯示 */
+    word-spacing: 20px;
+        /* 拉開 I'M 和 JARVIS 的距離 */
+        letter-spacing: 3px;
+        /* 讓每個字母都有呼吸空間 */
+        font-weight: bold;
+        text-transform: uppercase;
+}
+
+
+/* 文字進場動畫 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 6. 定義帥氣動畫的核心影格 --- */
+@keyframes bgReveal {
+    0% {
+        opacity: 0;
+        transform: scale(1.15);
+        filter: blur(5px);
+        /* 加入微微的模糊，更有科技感 */
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
 /* 4. 動畫定義 (建議放在檔案最下方或這裡) */
 @keyframes mesh-gradient {
     0% {
@@ -306,6 +434,16 @@
     }
 }
 
+/* --- 1. 基礎文字動畫設定 (所有標題與段落通用) --- */
+.reveal-text {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(40px) scale(1.1);
+    /* 這裡定義整體的動畫速度與曲線 */
+    animation: digitalFocus 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+/* --- 2. H1 設定 (保留你原本的紅粉漸層) --- */
 .main__content h1 {
     font-size: 4rem;
     background-color: #ff8177;
@@ -315,30 +453,49 @@
     -moz-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-text-fill-color: transparent;
+
+    /* 加入動畫延遲：最先出現 */
+    animation-delay: 0.2s;
 }
 
+/* --- 3. H2 設定 (保留你原本的紫藍漸層 + 處理空格) --- */
 .main__content h2 {
     font-size: 4rem;
-        background-color: #ff8177;
-        background-image: linear-gradient(to top, #b721ff 0%, #21d4fd 100%);
-        background-size: 100%;
-        -webkit-background-clip: text;
-        -moz-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        -moz-text-fill-color: transparent;
+    background-color: #ff8177;
+    background-image: linear-gradient(to top, #553fff 0%, #21d4fd 100%);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-text-fill-color: transparent;
+
+    /* 你提到的空格處理：這裡加寬單字間距，讓 I'M JARVIS 更帥 */
+    word-spacing: 25px;
+    letter-spacing: 2px;
+
+    /* 加入動畫延遲：晚一點點出現 */
+    animation-delay: 0.5s;
 }
 
+/* --- 4. P 設定 (保留白字加粗) --- */
 .main__content p {
     margin-top: 1rem;
     font-size: 2rem;
     font-weight: 700;
     color: #fff;
+
+    /* 加入動畫延遲：最後出現 */
+    animation-delay: 0.8s;
+    line-height: 1.5;
+
 }
 
+/* --- 5. 按鈕設定 (保留原本邏輯，解決縮小問題) --- */
 .main__btn {
+    /* 1. 基本樣式保持不變 */
     font-size: 1rem;
     background-image: linear-gradient(to top, #f77062 0%, #fe5196 100%);
-    padding: 14px 32px;
+    padding: 14px 120px;
     border: none;
     border-radius: 4px;
     color: #fff;
@@ -347,14 +504,36 @@
     position: relative;
     transition: all 0.35s;
     outline: none;
+
+    /* 2. ✨ 解決縮小的關鍵：確保寬度跟著內容走，不被父層擠壓 */
+    width: fit-content;
+    /* 讓按鈕寬度由 padding 和文字決定 */
+    display: inline-block;
+    /* 或是使用 flex/inline-block 保持形狀 */
+    align-self: flex-start;
+    /* 確保它在左側 40% 區域中靠左對齊，不變形 */
+
+    /* 3. 進場動畫保留 */
+    opacity: 0;
+    animation: fadeInUpBtn 0.8s ease-out 1.2s forwards;
 }
 
+/* 確保按鈕內的連結文字填滿點擊區域 */
 .main__btn a {
     position: relative;
     z-index: 2;
     color: #fff;
     text-decoration: none;
+    display: block;
+    /* 讓 <a> 撐開到整個 padding 的範圍 */
 }
+
+/* 記得也要有原本的 hover 特效喔！ */
+.main__btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
 
 .main__btn:after {
     position: absolute;
@@ -368,22 +547,39 @@
     border-radius: 4px;
 }
 
-.main__btn:hover {
-    color: #fff;
-}
-
 .main__btn:hover:after {
     width: 100%;
 }
 
-.main__img--container {
-    text-align: center;
+
+
+/* --- 6. 定義動畫關鍵影格 (放在 CSS 最下方) --- */
+@keyframes digitalFocus {
+    0% {
+        opacity: 0;
+        filter: blur(12px);
+        transform: translateY(40px) scale(1.1);
+    }
+
+    100% {
+        opacity: 1;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
+    }
 }
 
-#main__img {
-    height: 80%;
-    width: 80%;
+@keyframes fadeInUpBtn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
+
 
 /*Mobile Responsive*/
 
