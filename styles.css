@@ -175,8 +175,6 @@
 /* --- 1. 平板與窄螢幕筆電 (960px) --- */
 @media screen and (max-width: 960px) {
 
-
-    /* Navbar 導航欄邏輯 */
     .navbar__container {
         display: flex;
         justify-content: space-between;
@@ -208,22 +206,22 @@
         font-size: 1.6rem;
     }
 
-    /* 針對 WJ STUDIO 文字的修改 */
+        /* --- WJ STUDIO Logo 文字與位置修改 --- */
     #navbar__logo {
-        /* 1. 縮小字體：建議設定在 1.5rem ~ 2rem 之間 */
-        font-size: 1.8rem;
+        /* 1. 縮小字體：從 1.8rem 降到 1.6rem，確保在小手機也不斷行 */
+        font-size: 1.9rem;
     
-        /* 2. 關鍵：強制不換行，確保 STUDIO 不會掉下去 */
+        /* 2. 強制不換行 */
         white-space: nowrap;
     
-        /* 3. 調整左邊距，避免太貼邊 */
-        padding-left: 20px;
+        /* 3. 往左邊移一點：將左邊距從 20px 縮小到 10px */
+        padding-left: 10px;
     
-        /* 確保與 Logo 圖片垂直置中 */
+        /* 確保垂直置中 */
         display: flex;
         align-items: center;
     }
-
+    
     #navbar__logo--img {
         height: 75px;
     }
@@ -237,11 +235,19 @@
         background: #fff;
     }
 
+    /* --- 手機版選單按鈕 (三條線) 位置修改 --- */
     #mobile-menu {
         position: absolute;
-        top: 20%;
+    
+        /* 1. 往下面移一點：使用 50% 配合 translateY 達成完美垂直置中 */
+        /* 這會比你原本的 20% 位置還要低，對齊文字更美觀 */
+        top: 50%;
         right: 5%;
-        transform: translate(5%, 20%);
+    
+        /* 2. 位移修正：確保按鈕中心點對準導航欄中心 */
+        transform: translateY(-50%);
+    
+        cursor: pointer;
     }
 
     .navbar__item {
@@ -265,7 +271,7 @@
         margin: 0;
     }
 
-    /* Services 服務區塊調整 */
+
     .services {
         height: 1600px;
     }
@@ -1281,7 +1287,3 @@
     display: block;
     /* 確保它們是顯示的 */
 }
-
-
-
-
