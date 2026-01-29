@@ -12,6 +12,10 @@ const mobileMenu = () => {
     menuLinks.classList.toggle('active');
 };
 
+// --- 6. 潛行導航欄邏輯 ---
+const navbar = document.querySelector('.navbar');
+let isScrolled = false;
+
 // 新增以下這段監聽器
 logo.addEventListener('click', (e) => {
     // 1. 核心重點：阻止 <a> 標籤的預設行為（即：跳轉/重載網頁）
@@ -152,3 +156,34 @@ function createParticle(x, y) {
         particle.remove();
     };
 }
+
+window.addEventListener('scroll', () => {
+    // 當捲動超過 100px 時，進入隱藏模式
+    if (window.scrollY > 100) {
+        if (!isScrolled) {
+            navbar.classList.add('nav-hidden');
+            isScrolled = true;
+        }
+    } else {
+        // 回到頁面頂部時，自動顯現
+        navbar.classList.remove('nav-hidden');
+        isScrolled = false;
+    }
+});
+
+// 滑鼠靠近頂部或進入 Navbar 時顯現
+document.addEventListener('mousemove', (e) => {
+    if (isScrolled) {
+        // 如果滑鼠座標在螢幕頂部 30px 以內，或是導航欄正在顯示中且滑鼠在上面
+        if (e.clientY < 30) {
+            navbar.classList.remove('nav-hidden');
+        }
+    }
+});
+
+// 當滑鼠離開 Navbar 區域後，如果還是在捲動狀態，就把它藏回去
+navbar.addEventListener('mouseleave', () => {
+    if (isScrolled) {
+        navbar.classList.add('nav-hidden');
+    }
+});
