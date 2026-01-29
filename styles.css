@@ -215,7 +215,7 @@
         white-space: nowrap;
     
         /* 3. 往左邊移一點：將左邊距從 20px 縮小到 10px */
-        padding-left: 10px;
+        padding-left: 5px;
     
         /* 確保垂直置中 */
         display: flex;
@@ -1287,3 +1287,4 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
