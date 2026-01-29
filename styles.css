@@ -210,13 +210,16 @@
     #navbar__logo {
         /* 1. 縮小字體：從 1.8rem 降到 1.6rem，確保在小手機也不斷行 */
         font-size: 2rem;
-    
+        
         /* 2. 強制不換行 */
         white-space: nowrap;
     
         /* 確保垂直置中 */
         display: flex;
         align-items: center;
+
+        /* 3. 往左邊移一點：將左邊距從 20px 縮小到 10px */
+        padding-left: 100px;
     }
     
     #navbar__logo--img {
@@ -1284,6 +1287,7 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
 
 
 
