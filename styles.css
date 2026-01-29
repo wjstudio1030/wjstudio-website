@@ -209,7 +209,7 @@
         /* --- WJ STUDIO Logo 文字與位置修改 --- */
     #navbar__logo {
         /* 1. 縮小字體：從 1.8rem 降到 1.6rem，確保在小手機也不斷行 */
-        font-size: 1.9rem;
+        font-size: 2rem;
     
         /* 2. 強制不換行 */
         white-space: nowrap;
@@ -1287,4 +1287,5 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
 
