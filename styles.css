@@ -219,7 +219,7 @@
         align-items: center;
 
         /* 3. 往左邊移一點：將左邊距從 20px 縮小到 10px */
-        padding-left: 100px;
+        padding-left: 20px;
     }
     
     #navbar__logo--img {
@@ -1287,6 +1287,7 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
 
 
 
