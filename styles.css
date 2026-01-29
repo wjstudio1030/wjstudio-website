@@ -213,7 +213,7 @@
     }
 
     #navbar__logo--img {
-        height: 35px;
+        height: 55px;
     }
 
     .navbar__toggle .bar {
@@ -1269,3 +1269,4 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
