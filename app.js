@@ -230,3 +230,25 @@ navbar.addEventListener('mouseleave', () => {
         navbar.classList.add('nav-hidden');
     }
 });
+
+
+// --- 讓指標也支援手機觸控 ---
+document.addEventListener('touchmove', (e) => {
+    // 取得第一根手指的座標
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+}, { passive: true });
+
+// 當手指離開螢幕時，隱藏指標 (選配)
+document.addEventListener('touchend', () => {
+    cursor.style.opacity = '0';
+    follower.style.opacity = '0';
+});
+
+// 當手指觸碰螢幕時，顯示指標
+document.addEventListener('touchstart', (e) => {
+    cursor.style.opacity = '1';
+    follower.style.opacity = '1';
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+}, { passive: true });
