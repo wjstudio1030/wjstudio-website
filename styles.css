@@ -209,7 +209,6 @@
     }
 
     /* 針對 WJ STUDIO 文字的修改 */
-    /* 針對 WJ STUDIO 文字的修改 */
     #navbar__logo {
         /* 1. 縮小字體：建議設定在 1.5rem ~ 2rem 之間 */
         font-size: 1.8rem;
@@ -1282,6 +1281,7 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
 
 
 
