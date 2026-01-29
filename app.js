@@ -6,6 +6,7 @@ const navLinks = document.querySelectorAll('.navbar__links');
 // --- 5. Logo 點擊粒子特效 (數位煙火) ---
 const logo = document.querySelector('#navbar__logo');
 
+
 // --- 1. Mobile Menu 邏輯 ---
 const mobileMenu = () => {
     menu.classList.toggle('is-active');
@@ -67,23 +68,31 @@ animateCursor();
 
 
 // --- 3. 滑鼠互動效果 ---
-const interactives = document.querySelectorAll('a, button, .services__card, .navbar__toggle');
+const interactives = document.querySelectorAll('a, button, .services__card, .navbar__toggle, .main__content h1, .main__content h2');
 
 interactives.forEach(el => {
     el.addEventListener('mouseenter', () => {
-        // 保持 translate(-50%, -50%) 以免指標跑位
-        cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-        follower.style.transform = 'translate(-50%, -50%) scale(1.8)';
-        follower.style.background = 'rgba(247, 112, 98, 0.2)';
+        cursor.style.transform = 'translate(-50%, -50%) scale(1.3)';
+        follower.style.transform = 'translate(-50%, -50%) scale(1.5)';
         follower.style.borderColor = 'transparent';
+
+        // --- 核心邏輯：區分顏色 ---
+        // 如果是 H2 (I'M JARVIS) 或者是按鈕 (main__btn)
+        if (el.tagName === 'H2' || el.classList.contains('main__btn')) {
+            follower.style.background = 'rgba(0, 242, 254, 0.4)'; // 淺藍色 (Jarvis Blue)
+        } else {
+            follower.style.background = 'rgba(247, 112, 98, 0.3)'; // 原本的紅粉色
+        }
     });
+
     el.addEventListener('mouseleave', () => {
         cursor.style.transform = 'translate(-50%, -50%) scale(1)';
         follower.style.transform = 'translate(-50%, -50%) scale(1)';
         follower.style.background = 'transparent';
-        follower.style.borderColor = '#ff8177';
+        follower.style.borderColor = '#ff8177'; // 平常狀態維持原色或你喜歡的顏色
     });
 });
+
 
 
 // --- 4. 捲動顯示動畫 (Intersection Observer) ---
@@ -180,6 +189,40 @@ document.addEventListener('mousemove', (e) => {
         }
     }
 });
+
+
+// 等待網頁載入完成
+document.addEventListener('DOMContentLoaded', () => {
+    const jarvisText = document.querySelectorAll('.main__content h1, .main__content h2');
+    const overlay = document.getElementById('gif-overlay');
+
+    // 1. 點擊文字顯示 GIF
+    jarvisText.forEach(text => {
+        text.addEventListener('click', () => {
+            overlay.classList.add('active');
+            
+            // 可選：播放音效 (如果你有 jarvis_voice.mp3)
+            let audio = new Audio('audio/HI_WJ.mp3');
+            audio.play();
+
+            // 3秒後自動關閉（或者是演完 GIF 的時間）
+            setTimeout(() => {
+                overlay.classList.remove('active');
+            }, 7500);
+        });
+    });
+
+    // 2. 點擊 GIF 任何地方也可以手動關閉
+    overlay.addEventListener('click', () => {
+        overlay.classList.remove('active');
+    });
+});
+
+// --- 3. 滑鼠互動效果 ---
+// 在這裡加入 .main__content h1 和 .main__content h2
+
+
+
 
 // 當滑鼠離開 Navbar 區域後，如果還是在捲動狀態，就把它藏回去
 navbar.addEventListener('mouseleave', () => {
