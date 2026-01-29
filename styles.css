@@ -224,6 +224,7 @@
     
     #navbar__logo--img {
         height: 75px;
+        margin-right: 8px;
     }
 
     .navbar__toggle .bar {
@@ -1287,6 +1288,7 @@
     display: block;
     /* 確保它們是顯示的 */
 }
+
 
 
 
